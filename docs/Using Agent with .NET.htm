@@ -1,0 +1,185 @@
+<html>
+<head>
+<title>Using Agent with .NET</title>
+</head>
+<body>
+
+<h1>Contents</h1>
+
+<ul>
+<li><a href="#Overview">Overview</a></li>
+<li><a href="#Requirements">Requirements</a></li>
+<li><a href="#Using">Using Microsoft Agent with the .NET Framework</a></li>
+<li><a href="#Programming">Programming Agent</a></li>
+<li><a href="#HelloWorld">Hello World Sample</a></li>
+<li><a href="#SR">Using Speech Recognition</a></li>
+<li><a href="#HelloWorldI">Interactive Hello World Sample</a></li>
+<li><a href="#AgentDemo">The AgentDemo Application</a></li>
+<li><a href="#AppNote">A Note About Your Applications</a></li>
+</ul>
+
+<h1><a name="Overview">Overview</a></h1>
+<p>Microsoft Office 2000 uses animated characters, which it
+calls Office Assistants, to help users and provide assistance. With Microsoft
+Agent, you can add such characters to your own applications. You can even use
+the Office Assistants themselves – like The Genius or F1. Characters designed
+for use with Agent can do a variety of tasks – like speech synthesis and
+recognition, in addition to displaying a variety of animations.</p>
+
+<h1><a name="Requirements">Requirements</a></h1>
+<p>To be able to use this technology, you must have:</p>
+<ol>
+ <li>The Microsoft Agent Core components.</li>
+ <li>The Microsoft Agent Characters – Genie, Merlin, Robby, and Peedy.</li>
+ <li>The Lernout and Hauspie Text-to-Speech engines for at least US English.</li>
+ <li>The Microsoft Speech API 4.0a runtime.</li>
+ <li>The Microsoft Speech Recognition Engine.</li>
+</ol>
+<p>All these components are available from <a href="http://microsoft.com/msagent/downloads.htm">
+http://microsoft.com/msagent/downloads.htm</a>.
+In addition, to use the Microsoft Office characters, you must have Office 2000.
+Office 97 characters are not compatible with Agent.</p>
+
+<h1><a name="Using">Using Microsoft Agent with the .NET Framework</a></h1>
+<p>Microsoft Agent is provided as an ActiveX control DLL. To
+use it within .NET, you can use the AxImp.exe utility provided with the .NET
+Framework SDK. Create a folder where you want to keep the imported libraries,
+and then use the command:</p>
+<pre>aximp %systemroot%\msagent\agentctl.dll</pre>
+<p>The makefile included in the download does this for you. This command should create two files: AxAgentObjects.dll
+ and AgentObjects.dll. You are now ready to use Agent with
+.NET.</p>
+
+<h1><a name="Programming">Programming Agent</a></h1>
+<p>Agent programming is easy because it
+relies completely on COM, and we don’t have to mess around with PInvoke or
+something. The first step to using Agent is to add the Agent ActiveX control in
+AxAgentObjects.dll to your project. Put it anywhere on a form; it is invisible
+at runtime. Next, you should add a member variable of type
+AgentObjects.IAgentCtlCharacterEx (from AgentObjects.dll) to your class. You
+should import the AgentObjects namespace into your application; this simplifies
+several tasks. Essentially, you must, at a minimum:</p>
+<ol>
+ <li>Load the character you want, and provide a descriptive name to refer to it. In
+     the Hello World sample, this is accomplished by the line <tt>AxAgent.Characters.Load(&quot;Genie&quot;, (object)&quot;GENIE.ACS&quot;);</tt></li>
+ <li>Set your character variable to the character you just loaded. In the Hello
+     World sample, this is accomplished by the line <tt>Character = AxAgent.Characters[&quot;Genie&quot;];</tt></li>
+ <li>Set the correct language to use: <tt>Character.LanguageID = 0x409;</tt>
+     sets the language to US English.</li>
+ <li>Show the character: <tt>Character.Show(null);</tt></li>
+</ol>
+<p>These steps shall simply load and
+display the character.</p>
+
+<h1><a name="HelloWorld">Hello World Sample</a></h1>
+<p><img border="0" width="374" height="136" src="HelloWorldSS.gif" /></p>
+<p>The mandatory Hello World sample requires
+the Genie character. The sample simply loads the character and displays him.
+You can also make him say something. To make the character talk, the character’s
+speak method is called, like this:</p>
+<pre>
+      if(TextToSpeak.Text.Length == 0)  // Don't speak a zero-length
+        return;                         // string.
+      
+      //Make the character speak.
+      Character.Speak(TextToSpeak.Text, null);
+</pre>
+<p>As you can see, it’s very simple to use Agent.</p>
+
+<h1><a name="SR">Using Speech Recognition</a></h1>
+<p>Unlike the office assistants, you can make Agent characters
+talk and also respond to voice commands. Any commands you add shall also be
+available in the character’s context menu. Speech recognition is, by default,
+enabled only when you hold down the scroll lock key. All you have to do is to add
+new commands to the character object’s Commands collection. Then, you must add an
+event handler for the Agent control’s Command event. A boxed IAgentCtlUserInput
+object is supplied to the event handler as a parameter. You can access the
+command recognised by the IAgentCtlUserInput object’s Name property.</p>
+
+<h1><a name="HelloWorldI">Interactive Hello World Sample</a></h1>
+<p><img border="0" width="450" height="159" src="HelloWorldInteractiveSS.gif" /></p>
+
+<p>The Interactive Hello World sample demonstrates basic speech
+recognition, as well as playing animation. First, the control and the character
+(Robby) are loaded and initialised, and then two commands are added:</p>
+<pre>
+    protected void LoadButton_Click(object sender, System.EventArgs e)
+    {
+      // Load the Robby character.
+      AxAgent.Characters.Load("Robby", (object)"ROBBY.ACS");
+      Character = AxAgent.Characters["Robby"];
+      StatusLabel.Text = Character.Name + " loaded.";
+      // Set the language to US English.
+      Character.LanguageID = 0x409;
+      
+      // Display the character.
+      Character.Show(null);
+      
+      LoadButton.Enabled = false;
+      
+      // Display name for the commands.
+      Character.Commands.Caption = "Hello World";
+      
+      Character.Commands.Add("Hello",  // Command name
+        (object)"Say Hello",  // Display name
+        (object)"([say](hello | hi) | good (day | morning | evening))", // SR String
+        (object)true,  // Enabled
+        (object)true);  // Visible
+      
+      Character.Commands.Add("Goodbye",  // Command name
+        (object)"Goodbye",  // Display name
+        (object)"(bye | goodbye | exit | close | quit)", // SR String
+        (object)true,  // Enabled
+        (object)true);  // Visible
+      
+      PromptLabel.Visible = true;
+    }
+</pre>
+<p>The speech recognition strings offer several options that
+the user can say; for example, saying ‘goodbye’, ‘bye’ and ‘close’ have the
+same effect. In all cases, the command name is passed to the event handler, so
+you don’t have to account for the various variations of the recognised string.
+In the event handler, a test is done for the command:</p>
+<pre>
+    protected void AxAgent_Command(object sender, AxAgentObjects._AgentEvents_CommandEvent e)
+    {
+      IAgentCtlUserInput ui;
+      ui = (IAgentCtlUserInput)e.userInput;
+      if(ui.Name == "Hello")
+      {
+        Character.Speak((object)"Hello. My name is Robby." +
+          " Pleased to meet you.", null);
+        
+        PromptLabel.Text = "Say goodbye to dismiss Robby.";
+      }
+      if(ui.Name == "Goodbye")
+      {
+        Character.Speak((object)"It was nice talking to" +
+          " you. Goodbye.", null);
+        
+        Character.Play("Wave");
+        Character.Play("Hide");
+      }
+    }
+</pre>
+<p>Animations are played with the character object’s play
+method.</p>
+
+<h1><a name="AgentDemo">The AgentDemo Application</a></h1>
+<p>If you see the <a href="http://msdn.microsoft.com/workshop/imedia/agent/default.asp">
+Microsoft Agent site</a>, you will see a Visual Basic sample that enumerates all
+animations present in a character. The AgentDemo application also does the same
+thing, only in C#. You can load all Agent and Microsoft Office characters and
+see a list of animations. Here’s a screenshot (with the Office 2000 F1
+character loaded):</p>
+<p><img border="0" width="385" height="441" src="AgentDemoSS.gif" /></p>
+<p>This app is kinda redundant now, because Microsoft ships just such a sample with Beta 2.
+I just converted what I had done for Beta 1 to Beta 2 code.</p>
+
+<h1><a name="AppNote">A Note About Your Applications</a></h1>
+<p>Many people think that the Office Assistants are irritating.
+You must take care not to make your characters irritating, but instead helpful,
+and always provide an easily accessible option to turn them off.</p>
+
+</body>
+</html>
