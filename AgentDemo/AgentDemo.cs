@@ -46,6 +46,7 @@ namespace Techinox.AgentDemo
       InitializeComponent();
     }
         
+    [STAThread]
     public static void Main(string[] args)
     {
       Application.Run(new AgentDemoForm());
@@ -98,8 +99,8 @@ namespace Techinox.AgentDemo
       AnimationList.Size = new Size(280, 95);
       AnimationList.TabIndex = 0;
       AnimationList.Sorted = true;
-      AnimationList.DoubleClick += new System.EventHandler(AnimationList_DoubleClick);
-      AnimationList.Click += new System.EventHandler(AnimationList_Click);
+      AnimationList.DoubleClick += new EventHandler(AnimationList_DoubleClick);
+      AnimationList.Click += new EventHandler(AnimationList_Click);
     
       AxAgent.Size = new Size(32, 32);
       AxAgent.TabIndex = 22;
@@ -114,11 +115,11 @@ namespace Techinox.AgentDemo
       AxAgent.Bookmark += new AxAgentObjects._AgentEvents_BookmarkEventHandler(AxAgent_Bookmark);
       AxAgent.Command += new AxAgentObjects._AgentEvents_CommandEventHandler(AxAgent_Command);
       AxAgent.BalloonHide += new AxAgentObjects._AgentEvents_BalloonHideEventHandler(AxAgent_BalloonHide);
-      AxAgent.AgentPropertyChange += new System.EventHandler(AxAgent_AgentPropertyChange);
+      AxAgent.AgentPropertyChange += new EventHandler(AxAgent_AgentPropertyChange);
       AxAgent.SizeEvent += new AxAgentObjects._AgentEvents_SizeEventHandler(AxAgent_Event_Size);
       AxAgent.DragStart += new AxAgentObjects._AgentEvents_DragStartEventHandler(AxAgent_DragStart);
       AxAgent.MoveEvent += new AxAgentObjects._AgentEvents_MoveEventHandler(AxAgent_Event_Move);
-      AxAgent.Shutdown += new System.EventHandler(AxAgent_Shutdown);
+      AxAgent.Shutdown += new EventHandler(AxAgent_Shutdown);
       AxAgent.ShowEvent += new AxAgentObjects._AgentEvents_ShowEventHandler(AxAgent_Event_Show);
       AxAgent.HelpComplete += new AxAgentObjects._AgentEvents_HelpCompleteEventHandler(AxAgent_HelpComplete);
       AxAgent.ActiveClientChange += new AxAgentObjects._AgentEvents_ActiveClientChangeEventHandler(AxAgent_ActiveClientChange);
@@ -127,7 +128,7 @@ namespace Techinox.AgentDemo
       AxAgent.HideEvent += new AxAgentObjects._AgentEvents_HideEventHandler(AxAgent_Event_Hide);
       AxAgent.RequestStart += new AxAgentObjects._AgentEvents_RequestStartEventHandler(AxAgent_RequestStart);
       AxAgent.BalloonShow += new AxAgentObjects._AgentEvents_BalloonShowEventHandler(AxAgent_BalloonShow);
-      AxAgent.Restart += new System.EventHandler(AxAgent_Restart);
+      AxAgent.Restart += new EventHandler(AxAgent_Restart);
       AxAgent.ListenComplete += new AxAgentObjects._AgentEvents_ListenCompleteEventHandler(AxAgent_ListenComplete);
       AxAgent.DeactivateInput += new AxAgentObjects._AgentEvents_DeactivateInputEventHandler(AxAgent_DeactivateInput);
     
@@ -136,6 +137,7 @@ namespace Techinox.AgentDemo
       StatusLabel.Size = new Size(280, 24);
       StatusLabel.TabIndex = 1;
     
+      AutoStopCheck.FlatStyle = FlatStyle.Flat;
       AutoStopCheck.Checked = true;
       AutoStopCheck.Enabled = false;
       AutoStopCheck.Location = new Point(8, 192);
@@ -143,29 +145,32 @@ namespace Techinox.AgentDemo
       AutoStopCheck.Size = new Size(360, 16);
       AutoStopCheck.CheckState = CheckState.Checked;
       AutoStopCheck.TabIndex = 6;
-      AutoStopCheck.Click += new System.EventHandler(AutoStopCheck_Click);
+      AutoStopCheck.Click += new EventHandler(AutoStopCheck_Click);
     
+      PlayButton.FlatStyle = FlatStyle.Flat;
       PlayButton.Location = new Point(296, 64);
       PlayButton.Size = new Size(72, 24);
       PlayButton.TabIndex = 3;
       PlayButton.Enabled = false;
       PlayButton.Text = "Play";
-      PlayButton.Click += new System.EventHandler(PlayButton_Click);
+      PlayButton.Click += new EventHandler(PlayButton_Click);
     
       TextToSpeak.Location = new Point(8, 240);
       TextToSpeak.Text = "Enter some text to be spoken here.";
       TextToSpeak.Multiline = true;
+      TextToSpeak.ScrollBars = ScrollBars.Vertical;
       TextToSpeak.TabIndex = 9;
       TextToSpeak.Enabled = false;
       TextToSpeak.Size = new Size(280, 72);
-      TextToSpeak.TextChanged += new System.EventHandler(TextToSpeak_TextChanged);
+      TextToSpeak.TextChanged += new EventHandler(TextToSpeak_TextChanged);
     
+      AutoHideCheck.FlatStyle = FlatStyle.Flat;
       AutoHideCheck.Location = new Point(24, 344);
       AutoHideCheck.Text = "Auto Hide";
       AutoHideCheck.Size = new Size(80, 16);
       AutoHideCheck.TabIndex = 12;
       AutoHideCheck.Enabled = false;
-      AutoHideCheck.Click += new System.EventHandler(AutoHideCheck_Click);
+      AutoHideCheck.Click += new EventHandler(AutoHideCheck_Click);
     
       TextToSpeakLabel.Location = new Point(8, 224);
       TextToSpeakLabel.Text = "Text to Speech:";
@@ -193,67 +198,75 @@ namespace Techinox.AgentDemo
       PosY.TabIndex = 21;
       PosY.Enabled = false;
       PosY.Size = new Size(48, 20);
-      PosY.TextChanged += new System.EventHandler(PosY_TextChanged);
+      PosY.TextChanged += new EventHandler(PosY_TextChanged);
     
+      BalloonCheck.FlatStyle = FlatStyle.Flat;
       BalloonCheck.Location = new Point(8, 320);
       BalloonCheck.Text = "Show balloon";
       BalloonCheck.Size = new Size(280, 16);
       BalloonCheck.TabIndex = 11;
       BalloonCheck.Enabled = false;
-      BalloonCheck.Click += new System.EventHandler(BalloonCheck_Click);
+      BalloonCheck.Click += new EventHandler(BalloonCheck_Click);
     
       PosX.Location = new Point(136, 384);
       PosX.TabIndex = 20;
       PosX.Enabled = false;
       PosX.Size = new Size(48, 20);
-      PosX.TextChanged += new System.EventHandler(PosX_TextChanged);
+      PosX.TextChanged += new EventHandler(PosX_TextChanged);
     
+      MoveButton.FlatStyle = FlatStyle.Flat;
       MoveButton.Location = new Point(296, 384);
       MoveButton.Size = new Size(72, 24);
       MoveButton.TabIndex = 16;
       MoveButton.Text = "Move";
       MoveButton.Enabled = false;
-      MoveButton.Click += new System.EventHandler(MoveButton_Click);
+      MoveButton.Click += new EventHandler(MoveButton_Click);
     
+      LoadButton.FlatStyle = FlatStyle.Flat;
       LoadButton.Location = new Point(296, 8);
       LoadButton.Size = new Size(72, 24);
       LoadButton.TabIndex = 2;
       LoadButton.Text = "&Load...";
-      LoadButton.Click += new System.EventHandler(LoadButton_Click);
+      LoadButton.Click += new EventHandler(LoadButton_Click);
     
+      SpeakButton.FlatStyle = FlatStyle.Flat;
       SpeakButton.Location = new Point(296, 240);
       SpeakButton.Size = new Size(72, 24);
       SpeakButton.TabIndex = 10;
       SpeakButton.Text = "Speak";
       SpeakButton.Enabled = false;
-      SpeakButton.Click += new System.EventHandler(SpeakButton_Click);
+      SpeakButton.Click += new EventHandler(SpeakButton_Click);
     
+      AutoPaceCheck.FlatStyle = FlatStyle.Flat;
       AutoPaceCheck.Location = new Point(104, 344);
       AutoPaceCheck.Text = "Auto Pace";
       AutoPaceCheck.Size = new Size(80, 16);
       AutoPaceCheck.TabIndex = 13;
       AutoPaceCheck.Enabled = false;
-      AutoPaceCheck.Click += new System.EventHandler(AutoPaceCheck_Click);
+      AutoPaceCheck.Click += new EventHandler(AutoPaceCheck_Click);
     
+      StopButton.FlatStyle = FlatStyle.Flat;
       StopButton.Location = new Point(296, 96);
       StopButton.Size = new Size(72, 24);
       StopButton.TabIndex = 4;
       StopButton.Text = "Stop";
       StopButton.Enabled = false;
-      StopButton.Click += new System.EventHandler(StopButton_Click);
+      StopButton.Click += new EventHandler(StopButton_Click);
     
       PositionLabel.Location = new Point(8, 384);
       PositionLabel.Text = "Position:";
       PositionLabel.Size = new Size(280, 16);
       PositionLabel.TabIndex = 15;
     
+      AutoSizeCheck.FlatStyle = FlatStyle.Flat;
       AutoSizeCheck.Location = new Point(184, 344);
       AutoSizeCheck.Text = "Auto Size";
       AutoSizeCheck.Size = new Size(80, 16);
       AutoSizeCheck.TabIndex = 14;
       AutoSizeCheck.Enabled = false;
-      AutoSizeCheck.Click += new System.EventHandler(AutoSizeCheck_Click);
+      AutoSizeCheck.Click += new EventHandler(AutoSizeCheck_Click);
     
+      SoundsCheck.FlatStyle = FlatStyle.Flat;
       SoundsCheck.Checked = true;
       SoundsCheck.Location = new Point(8, 168);
       SoundsCheck.Text = "Play sounds";
@@ -261,7 +274,7 @@ namespace Techinox.AgentDemo
       SoundsCheck.CheckState = CheckState.Checked;
       SoundsCheck.TabIndex = 5;
       SoundsCheck.Enabled = false;
-      SoundsCheck.Click += new System.EventHandler(SoundsCheck_Click);
+      SoundsCheck.Click += new EventHandler(SoundsCheck_Click);
       
       this.Text = "Agent Demo";
       this.AutoScaleBaseSize = new Size(5, 13);
@@ -269,7 +282,7 @@ namespace Techinox.AgentDemo
       this.FormBorderStyle = FormBorderStyle.FixedDialog;
       this.MaximizeBox = false;
       this.AcceptButton = LoadButton;
-      this.Closing += new System.ComponentModel.CancelEventHandler(AgentDemoForClosing);
+      this.Closing += new System.ComponentModel.CancelEventHandler(AgentDemo_Closing);
     
       this.Controls.Add(AxAgent);
       this.Controls.Add(line1);
@@ -299,11 +312,11 @@ namespace Techinox.AgentDemo
     
       AxAgent.EndInit();
     }
-    protected void AxAgent_Shutdown(object sender, System.EventArgs e)
+    protected void AxAgent_Shutdown(object sender, EventArgs e)
     {
       
     }
-    protected void AxAgent_Restart(object sender, System.EventArgs e)
+    protected void AxAgent_Restart(object sender, EventArgs e)
     {
       
     }
@@ -397,7 +410,7 @@ namespace Techinox.AgentDemo
     {
       
     }
-    protected void AxAgent_AgentPropertyChange(object sender, System.EventArgs e)
+    protected void AxAgent_AgentPropertyChange(object sender, EventArgs e)
     {
       PosX.Text = Character.Left.ToString();
       PosY.Text = Character.Top.ToString();
@@ -422,7 +435,7 @@ namespace Techinox.AgentDemo
     {
       
     }
-    protected void AgentDemoForClosing(object sender, System.ComponentModel.CancelEventArgs e)
+    protected void AgentDemo_Closing(object sender, System.ComponentModel.CancelEventArgs e)
     {
       try
       {
@@ -431,12 +444,12 @@ namespace Techinox.AgentDemo
       }
       catch {}
     }
-    protected void MoveButton_Click(object sender, System.EventArgs e)
+    protected void MoveButton_Click(object sender, EventArgs e)
     {
       Character.MoveTo(Int16.Parse(PosX.Text),
         Int16.Parse(PosY.Text), null);
     }
-    protected void AutoSizeCheck_Click(object sender, System.EventArgs e)
+    protected void AutoSizeCheck_Click(object sender, EventArgs e)
     {
       if(AutoSizeCheck.Checked)
       {
@@ -449,7 +462,7 @@ namespace Techinox.AgentDemo
           (~SizeToText);
       }
     }
-    protected void AutoPaceCheck_Click(object sender, System.EventArgs e)
+    protected void AutoPaceCheck_Click(object sender, EventArgs e)
     {
       if(AutoPaceCheck.Checked)
       {
@@ -462,7 +475,7 @@ namespace Techinox.AgentDemo
           (~AutoPace);
       }
     }
-    protected void AutoHideCheck_Click(object sender, System.EventArgs e)
+    protected void AutoHideCheck_Click(object sender, EventArgs e)
     {
       if(AutoHideCheck.Checked)
       {
@@ -475,7 +488,7 @@ namespace Techinox.AgentDemo
           (~AutoHide);
       }
     }
-    protected void BalloonCheck_Click(object sender, System.EventArgs e)
+    protected void BalloonCheck_Click(object sender, EventArgs e)
     {
       if(BalloonCheck.Checked)
       {
@@ -492,29 +505,29 @@ namespace Techinox.AgentDemo
       AutoPaceCheck.Enabled = Character.Balloon.Enabled;
       AutoSizeCheck.Enabled = Character.Balloon.Enabled;
     }
-    protected void TextToSpeak_TextChanged(object sender, System.EventArgs e)
+    protected void TextToSpeak_TextChanged(object sender, EventArgs e)
     {
       this.AcceptButton = SpeakButton;
     }
-    protected void SpeakButton_Click(object sender, System.EventArgs e)
+    protected void SpeakButton_Click(object sender, EventArgs e)
     {
       if(TextToSpeak.Text.Length == 0) return;
       
       Character.Speak(TextToSpeak.Text, null);
     }
-    protected void AutoStopCheck_Click(object sender, System.EventArgs e)
+    protected void AutoStopCheck_Click(object sender, EventArgs e)
     {
       
     }
-    protected void SoundsCheck_Click(object sender, System.EventArgs e)
+    protected void SoundsCheck_Click(object sender, EventArgs e)
     {
       Character.SoundEffectsOn = SoundsCheck.Checked;
     }
-    protected void StopButton_Click(object sender, System.EventArgs e)
+    protected void StopButton_Click(object sender, EventArgs e)
     {
       Character.Stop(null);
     }
-    protected void PlayButton_Click(object sender, System.EventArgs e)
+    protected void PlayButton_Click(object sender, EventArgs e)
     {
       if(AutoStopCheck.Checked)
         Character.Stop(null);
@@ -525,7 +538,7 @@ namespace Techinox.AgentDemo
       String sAnim = AnimationList.Items[index].ToString();
       Character.Play(sAnim);
     }
-    protected void LoadButton_Click(object sender, System.EventArgs e)
+    protected void LoadButton_Click(object sender, EventArgs e)
     {
       OpenFileDialog openFileDialog = new OpenFileDialog();
       openFileDialog.AddExtension = true;
@@ -591,19 +604,19 @@ namespace Techinox.AgentDemo
       Character.Commands.Add("CharacterOptions",
         (object)"&Options...", null, null, null);
     }
-    protected void AnimationList_DoubleClick(object sender, System.EventArgs e)
+    protected void AnimationList_DoubleClick(object sender, EventArgs e)
     {
       PlayButton_Click(sender, e);
     }
-    protected void AnimationList_Click(object sender, System.EventArgs e)
+    protected void AnimationList_Click(object sender, EventArgs e)
     {
       this.AcceptButton = PlayButton;
     }
-    protected void PosX_TextChanged(object sender, System.EventArgs e)
+    protected void PosX_TextChanged(object sender, EventArgs e)
     {
       this.AcceptButton = MoveButton;
     }
-    protected void PosY_TextChanged(object sender, System.EventArgs e)
+    protected void PosY_TextChanged(object sender, EventArgs e)
     {
       this.AcceptButton = MoveButton;
     }

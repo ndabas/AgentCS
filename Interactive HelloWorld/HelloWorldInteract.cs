@@ -21,6 +21,7 @@ namespace Techinox.HelloWorldInteractive
       InitializeComponent();
     }
     
+    [STAThread]
     public static void Main(string[] args)
     {
       Application.Run(new HelloWorldInteractForm());
